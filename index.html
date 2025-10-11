@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣自來水公司 第一區管理處 - 內部資訊系統入口 (分頁版 - 最終修正)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 保持原有的基礎樣式 */
+        body { font-family: 'Microsoft JhengHei', Arial, sans-serif; background-color: #F8F9FA; color: #333; margin: 0; padding: 20px; line-height: 1.6; }
+        .header { text-align: center; background: linear-gradient(135deg, #007BFF, #28A745); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; }
+        .header h1 { margin: 0; font-size: 2em; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .search-container { margin-bottom: 20px; }
+        #search-input { width: 100%; padding: 10px 15px; border: 2px solid #CED4DA; border-radius: 8px; font-size: 16pt; transition: border-color 0.3s; box-sizing: border-box; }
+        #search-input:focus { border-color: #007BFF; outline: none; box-shadow: 0 0 5px rgba(0, 123, 255, 0.25); }
+        .announcement-card { background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px; padding: 20px; }
+        .announcement { background: #E3F2FD; border-left: 5px solid #007BFF; padding: 15px; }
+
+        /* 分頁標籤 (Tabs) 樣式 */
+        .tabs { display: flex; border-bottom: 2px solid #dee2e6; margin-bottom: 20px; }
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            background-color: #e9ecef;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            font-size: 1.1em;
+            color: #495057;
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .tab-button:hover:not(.active) {
+            background-color: #f8f9fa;
+        }
+        .tab-button.active {
+            color: #007BFF;
+            background-color: white;
+            border-color: #dee2e6;
+            border-top: 3px solid #007BFF;
+            margin-top: -3px;
+        }
+        .tab-button i { margin-right: 8px; }
+
+        /* 分頁內容 (Tab Content) 樣式 */
+        .tab-content {
+            background: white;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: none; /* 預設隱藏 */
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 連結卡片樣式 */
+        .sub-card { margin-top: 15px; padding: 15px; border-radius: 8px; }
+        .sub-card.internal { background: #FFF8CA; border-left: 4px solid #FFC107; }
+        .sub-card.external { background: #DAFAAA; border-left: 4px solid #28A745; }
+        .sub-card h3 { margin: 0 0 10px 0; font-size: 1.2em; color: #05203D; font-weight: bold; }
+        .links ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; }
+        .links li { margin: 5px 0; display: block; }
+        .links a { color: #007BFF; text-decoration: none; padding: 8px 12px; border: 1px solid #007BFF; border-radius: 5px; display: flex; align-items: center; transition: background 0.2s; font-size: 14pt; }
+        .links a i { margin-right: 8px; width: 15px; }
+        .links a:hover { background: #007BFF; color: white; }
+        .subtext { font-size: 10pt; color: #666; margin-left: 5px; }
+        .external a { border-color: #28A745; color: #28A745; }
+        .external a:hover { background: #28A745; color: white; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5em; }
+            .links ul { grid-template-columns: 1fr; }
+            .tab-button { flex-grow: 1; justify-content: center; text-align: center; }
+            .tabs { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-tint"></i> 台灣自來水公司 第一區管理處<br>內部資訊系統入口</h1>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="search-input" onkeyup="searchLinks()" placeholder="🔍 快速搜尋系統或部門名稱..." title="輸入任何關鍵字快速過濾連結">
+        </div>
+
+        <div class="announcement-card">
+            <h2><i class="fas fa-bullhorn"></i> 訊息公告</h2>
+            <div class="announcement">
+                1. 新進/調職異動同仁各項系統帳號權限申請，請填具「<a href="https://cloud.water.gov.tw/F_Eform200/Index" title="帳號權限申請表" target="_blank">帳號權限申請表</a>」向業管單位提出申請；                 <br>
+                2. 本站參考「8區」的首頁改建
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab-button active" onclick="openTab(event, 'AdminLinks')" data-tab="AdminLinks">
+                <i class="fas fa-file-alt"></i> 一般行政常用連結
+            </div>
+            <div class="tab-button" onclick="openTab(event, 'OperationLinks')" data-tab="OperationLinks">
+                <i class="fas fa-chart-line"></i> 營運常用連結
+            </div>
+            <div class="tab-button" onclick="openTab(event, 'WaterLinks')" data-tab="WaterLinks">
+                <i class="fas fa-water"></i> 供水、漏防、工程常用連結
+            </div>
+        </div>
+
+        <div id="AdminLinks" class="tab-content active">
+            <div class="sub-card internal">
+                <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
+                <div class="links">
+                    <ul>
+                        <li><a href="https://mail.water.gov.tw" title="電子信箱(email)" target="_blank"><i class="fas fa-envelope"></i>電子信箱(email)<span class="subtext">(資訊)</span></a></li>
+                        <li><a href="https://km.water.gov.tw/" title="知識管理系統" target="_blank"><i class="fas fa-brain"></i>知識管理系統<span class="subtext">(人事室)</span></a></li>
+                        <li><a href="https://edoc.water.gov.tw" title="公文系統" target="_blank"><i class="fas fa-file-contract"></i>公文系統<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="https://10.100.101.29/tbse/" title="會計系統" target="_blank"><i class="fas fa-calculator"></i>會計系統<span class="subtext">(會計室)</span></a></li>
+                        <li><a href="https://www.water.gov.tw/dist1" title="一區官網" target="_blank"><i class="fas fa-globe"></i>一區官方網站<span class="subtext">(資訊)</span></a></li>
+                        <li><a href="https://hrap5.water.gov.tw/hrm/hrm/login.aspx" title="人事作業自動化系統" target="_blank"><i class="fas fa-users"></i>人事自動化系統<span class="subtext">(人事室)</span></a></li>
+                        <li><a href="https://cloud.water.gov.tw/Menu/Sub_NonConsumable" title="非消耗品系統" target="_blank"><i class="fas fa-box"></i>非消耗品系統<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="http://ecs1" title="一區電子會議" target="_blank"><i class="fas fa-video"></i>電子會議<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="microsoft-edge:https://10.100.50.41:9080/fp/login.jsp" title="財產管理資訊系統" target="_blank"><i class="fas fa-building"></i>財產管理系統(請用Edge開啟)<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="microsoft-edge:https://10.100.50.20:9080/mr/login.jsp" title="材料管理資訊系統" target="_blank"><i class="fas fa-cubes"></i>材料管理系統(請用Edge開啟)<span class="subtext">(物料課)</span></a></li>
+                        <li><a href="http://10.100.70.8:8038/" title="租賃管理資訊系統" target="_blank"><i class="fas fa-key"></i>租賃管理資訊系統<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="https://cloud.water.gov.tw/Menu/Main" title="台水綜合雲系統" target="_blank"><i class="fas fa-cloud"></i>台水綜合雲系統<span class="subtext">(總處)</span></a></li>
+                        <li><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_ZjhmMDlhZDktYjU3MS00ZmJhLTk2ODUtZmZiNGVhYjZlNGYy%40thread.v2/0?context=%7b%22Tid%22%3a%22db23651c-0c8e-47f7-ae89-28a0654c974c%22%2c%22Oid%22%3a%22e77d2e84-c78c-405b-826c-16c52f236e95%22%7d" title="總處第一會議室" target="_blank"><i class="fas fa-desktop"></i>總處第一會議室<span class="subtext">(Teams)</span></a></li>
+                        <li><a href="https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmeetup-join%2F19%3Ameeting_N2E2ZmQ1MjQtN2M2ZS00NTg3LTllZjgtNzJmOGMwMzc4Zjdl%40thread.v2%2F0%3Fcontext%3D%257b%2522Tid%2522%253a%2522db23651c-0c8e-47f7-ae89-28a0654c974c%2522%252c%2522Oid%2522%253a%2522e1d904d0-361f-42b9-9d95-dda69587b905%2522%257d%26anon%3Dtrue&type=meetup-join&deeplinkId=a012ae26-ec22-4af0-8d8a-03106b109f8f&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true" title="總處第二會議室" target="_blank"><i class="fas fa-desktop"></i>總處第二會議室<span class="subtext">(Teams)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sub-card external">
+                <h3><i class="fas fa-external-link-alt"></i> 外部連結</h3>
+                <div class="links external">
+                    <ul>
+                        <li><a href="https://www.cwa.gov.tw/V8/C/" title="中央氣象署" target="_blank"><i class="fas fa-cloud-sun"></i>交通部中央氣象署</a></li>
+                        <li><a href="https://www.osha.gov.tw/" title="勞動部職業安全衛生署" target="_blank"><i class="fas fa-hard-hat"></i>勞動部職業安全衛生署</a></li>
+                        <li><a href="https://web.pcc.gov.tw/pis/main/pis/" title="政府採購網" target="_blank"><i class="fas fa-shopping-cart"></i>政府採購網</a></li>
+                        <li><a href="https://subsidy.nat.gov.tw/" title="民間團體捐助系統" target="_blank"><i class="fas fa-donate"></i>民間團體捐助系統</a></li>
+                        <li><a href="https://landquery.klcg.gov.tw/query/valueprice.jsp?menu=true&type=P" title="基隆市公告土地現值查詢" target="_blank"><i class="fas fa-map-marker-alt"></i>基隆公告土地現值查詢</a></li>
+                        <li><a href="https://luz.tcd.gov.tw/WEB/" title="全國土地使用分區查詢系統" target="_blank"><i class="fas fa-map"></i>全國土地使用查詢系統</a></li>
+                        <li><a href="https://www.facebook.com/www.water1/?locale=zh_TW" title="西勢水庫FB" target="_blank"><i class="fab fa-facebook"></i>西勢水庫FaceBook</a></li>
+                        <li><a href="https://elearn.moenv.gov.tw/Default.aspx" title="台北e大學習網" target="_blank"><i class="fas fa-graduation-cap"></i>台北e大</a></li>
+                        <li><a href="https://elearning/mpage/" title="環境教育終身學習網" target="_blank"><i class="fas fa-graduation-cap"></i>環境教育終身學習網</a></li>
+                        <li><a href="https://pdps.nat.gov.tw/Login/Pdis/Login" title="法務部公職人員財產申報" target="_blank"><i class="fas fa-file-signature"></i>法務部公職人員財產申報</a></li>
+                        <li><a href="https://www.pcc.gov.tw/content/index?type=C&eid=3309&lang=1" title="採購法解釋函" target="_blank"><i class="fas fa-gavel"></i>採購法解釋函及相關函文</a></li>
+                        <li><a href="https://pdps.nat.gov.tw/Login/CY/Login_01V1" title="監察院公職人員財產申報" target="_blank"><i class="fas fa-balance-scale"></i>監察院公職人員財產申報</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="OperationLinks" class="tab-content">
+            <div class="sub-card internal">
+                <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
+                <div class="links">
+                    <ul>
+                        <li><a href="https://bmaps.water.gov.tw/" title="營運管理系統" target="_blank"><i class="fas fa-wrench"></i>營運管理系統<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="https://sys.water.gov.tw" title="資訊整合平台" target="_blank"><i class="fas fa-shield-alt"></i>電子帳單暨災害防救<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="http://10.100.24.15/" title="客戶服務系統" target="_blank"><i class="fas fa-headset"></i>客戶服務系統<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="https://www.water.gov.tw/einvoice/CloudInvoice?nodeId=4625" title="台水雲端發票專區" target="_blank"><i class="fas fa-receipt"></i>雲端發票專區<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="https://wbs.water.gov.tw:8443/twc-portal" title="水費開單系統" target="_blank"><i class="fas fa-money-check-alt"></i>水費開單系統<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="http://10.100.104.78/water/" title="新改裝系統" target="_blank"><i class="fas fa-tools"></i>新改裝系統<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="https://10.100.104.129/twdum/loginAD.jsp" title="全區用戶表監測系統" target="_blank"><i class="fas fa-tachometer-alt"></i>全區用戶表監測系統<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="https://www.water.gov.tw/SMSBILL/SMSBill/Apply" title="簡訊帳單" target="_blank"><i class="fas fa-mobile-alt"></i>簡訊帳單<span class="subtext">(業務課)</span></a></li>
+                        <li><a href="https://10.100.1.90/Home/Login?" title="統計資訊管理系統" target="_blank"><i class="fas fa-chart-bar"></i>統計資訊管理系統<span class="subtext">(會計室)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sub-card external">
+                <h3><i class="fas fa-external-link-alt"></i> 外部連結</h3>
+                <div class="links external">
+                    <ul>
+                        <li><a href="https://law.moj.gov.tw/index.aspx" title="全國法規資料庫" target="_blank"><i class="fas fa-balance-scale"></i>全國法規資料庫</a></li>
+                        <li><a href="https://www.einvoice.nat.gov.tw" title="財政部電子發票整合服務平台" target="_blank"><i class="fas fa-file-invoice"></i>財政部電子發票平台</a></li>
+                        <li><a href="https://www.ris.gov.tw/app/portal/3053" title="內政部戶政門牌查詢系統" target="_blank"><i class="fas fa-search-location"></i>內政部戶政門牌查詢</a></li>
+                        <li><a href="https://www.twsms.com/" title="台灣簡訊" target="_blank"><i class="fas fa-comment-dots"></i>台灣簡訊</a></li>
+                        <li><a href="https://maps.nlsc.gov.tw/" title="國土測繪資服雲" target="_blank"><i class="fas fa-globe-asia"></i>國土測繪圖資服務雲</a></li>
+                        <li><a href="https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=208" title="郵遞區號快速查詢" target="_blank"><i class="fas fa-mailbox"></i>郵遞區號快速查詢</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="WaterLinks" class="tab-content">
+            <div class="sub-card internal">
+                <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
+                <div class="links">
+                    <ul>
+                        <li><a href="http://10.1.1.46/ADlogin/login.aspx?Zone=01&System=wgis" title="圖資作業查詢系統(web)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(web)<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="https://gis.water.gov.tw/water_mobile/#/" title="圖資作業查詢系統(行動)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(行動)<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="http://10.1.1.50/csmap/" title="圖資查詢系統(3D圖台)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(3D圖台)<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="http://10.1.1.46/ADlogin/login.aspx?System=intraweb" title="圖資作業管理系統" target="_blank"><i class="fas fa-file-download"></i>圖資作業管理<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="https://w3.water.gov.tw/crims/" title="工程施工即時影像資訊管理系統" target="_blank"><i class="fas fa-video"></i>工程施工即時影像<span class="subtext">(工安課)</span></a></li>
+                        <li><a href="https://info01.water.gov.tw/twcwm/login.jsp" title="新版供水監測平台" target="_blank"><i class="fas fa-chart-area"></i>供水監測平台新版<span class="subtext">(操作課)</span></a></li>
+                        <li><a href="http://10.100.101.238/Home/Logon?ReturnUrl=%2f" title="二代工程管理系統" target="_blank"><i class="fas fa-cogs"></i>二代工程管理系統<span class="subtext">(工務課)</span></a></li>
+                        <li><a href="https://10.100.1.166/" title="水質預警系統" target="_blank"><i class="fas fa-flask"></i>水質預警系統<span class="subtext">(水質課)</span></a></li>
+                        <li><a href="http://10.100.1.150/pw/ADLogin.aspx" title="修漏系統" target="_blank"><i class="fas fa-faucet-drip"></i>修漏系統<span class="subtext">(漏防課)</span></a></li>
+                        <li><a href="https://w3.water.gov.tw/wateroffadmin/login" title="停水資訊查詢系統(後台)" target="_blank"><i class="fas fa-exclamation-triangle"></i>停水資訊查詢系統<span class="subtext">(後台)</span></a></li>
+                        <li><a href="http://10.100.1.150/cpweb/NewHome.html" title="檢漏管理系統" target="_blank"><i class="fas fa-search"></i>檢漏管理系統<span class="subtext">(漏防課)</span></a></li>
+                        <li><a href="https://eamb.water.gov.tw/Menu/Main" title="場站保修管理系統" target="_blank"><i class="fas fa-tools"></i>場站保修管理系統<span class="subtext">(操作課)</span></a></li>
+                        <li><a href="https://wada.water.gov.tw/wada/" title="總處WADA系統" target="_blank"><i class="fas fa-database"></i>總處WADA系統<span class="subtext">(漏防課)</span></a></li>
+                        <li><a href="https://10.100.1.80/login.aspx?ReturnUrl=/" title="分區計量管網管理系統" target="_blank"><i class="fas fa-network-wired"></i>分區計量管網管理系統<span class="subtext">(漏防課)</span></a></li>
+                        <li><a href="https://water007.water.gov.tw/wfsystem/Login" title="供水管理系統" target="_blank"><i class="fas fa-chart-pie"></i>供水管理系統<span class="subtext">(操作課)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sub-card external">
+                <h3><i class="fas fa-external-link-alt"></i> 外部連結</h3>
+                <div class="links external">
+                    <ul>
+                        <li><a href="https://dgs.thb.gov.tw/THBDGS/" title="公路局挖掘申請" target="_blank"><i class="fas fa-road"></i>公路局挖掘申請</a></li>
+                        <li><a href="https://egnss.nlsc.gov.tw/trans/index.aspx" title="e_GNSS三維座標轉換服務" target="_blank"><i class="fas fa-globe"></i>e-GNSS三維坐標轉換服務</a></li>
+                        <li><a href="https://kct.klcg.gov.tw/dig/Civilian/Default.aspx" title="基隆市道路挖掘申請" target="_blank"><i class="fas fa-road"></i>基隆市道路挖掘申請</a></li>
+                        <li><a href="https://roadmt.maintenance.ntpc.gov.tw/iROAD" title="新北市道路挖掘申請" target="_blank"><i class="fas fa-road"></i>新北市道路挖掘申請</a></li>
+                        <li><a href="https://www.windy.com/?25.081,121.654,11" title="氣象Windy.com" target="_blank"><i class="fas fa-wind"></i>氣象(Windy)</a></li>
+                        <li><a href="https://pcic.pcc.gov.tw/pwc-web/" title="公共工程雲端服務網" target="_blank"><i class="fas fa-folder-open"></i>公共工程雲端服務網</a></li>
+                        <li><a href="https://tppr.wra.gov.tw/sencad/" title="水庫集水區暨自來水水質水量保護區查詢系統" target="_blank"><i class="fas fa-mountain"></i>水庫集水區及保護區查詢</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Tab 切換邏輯 (修正：不再呼叫 searchLinks)
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+
+            // 隱藏所有內容
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove('active');
+                
+                // 確保在切換時，所有連結都恢復顯示 (清除搜尋結果的殘留隱藏狀態)
+                const allLinks = tabcontent[i].querySelectorAll('.links li');
+                allLinks.forEach(li => li.style.display = "");
+            }
+
+            // 移除所有 Tab 按鈕的 active 樣式
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // 顯示點擊的分頁內容，並將點擊的分頁標籤設為 active
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add("active");
+            
+            // 重要：切換分頁時，如果搜尋欄位有內容，應清除搜尋欄位，並恢復連結顯示狀態
+            const input = document.getElementById('search-input');
+            if (input.value !== "") {
+                input.value = "";
+            }
+        }
+
+        // 修正後的搜尋邏輯：實現跨分頁搜尋並自動跳轉
+        function searchLinks() {
+            const input = document.getElementById('search-input');
+            const filter = input.value.toUpperCase();
+            
+            // 取得所有連結項目 (跨越所有分頁)
+            const allLinkItems = document.querySelectorAll('.links li');
+            
+            let foundInTabId = null; // 用來記錄第一個找到結果的分頁 ID
+            
+            // 1. 遍歷所有連結項目
+            allLinkItems.forEach(li => {
+                const text = li.textContent || li.innerText;
+                
+                // 檢查連結文字是否包含篩選關鍵字
+                if (filter === "" || text.toUpperCase().indexOf(filter) > -1) {
+                    li.style.display = ""; // 顯示該項目
+                    
+                    // 如果有搜尋字，且這是第一次找到結果
+                    if (filter !== "" && foundInTabId === null) {
+                        // 找到 li 的祖先元素 .tab-content 的 ID
+                        const parentTabContent = li.closest('.tab-content');
+                        if (parentTabContent) {
+                            foundInTabId = parentTabContent.id;
+                        }
+                    }
+                } else {
+                    li.style.display = "none"; // 隱藏該項目
+                }
+            });
+            
+            // 2. 根據搜尋結果或清空欄位進行分頁切換
+            
+            if (filter !== "" && foundInTabId) {
+                // 情境 A: 有輸入關鍵字 且 找到結果 -> 強制切換到找到結果的分頁
+
+                // 隱藏所有內容
+                const tabcontents = document.getElementsByClassName("tab-content");
+                for (let i = 0; i < tabcontents.length; i++) {
+                    tabcontents[i].style.display = "none";
+                    tabcontents[i].classList.remove('active');
+                }
+                
+                // 移除所有 Tab 按鈕的 active 樣式
+                const tablinks = document.getElementsByClassName("tab-button");
+                for (let i = 0; i < tablinks.length; i++) {
+                    tablinks[i].classList.remove("active");
+                }
+
+                // 顯示找到結果的分頁
+                document.getElementById(foundInTabId).style.display = "block";
+                document.getElementById(foundInTabId).classList.add('active');
+
+                // 讓對應的分頁按鈕 active
+                const targetButton = document.querySelector(`.tab-button[data-tab="${foundInTabId}"]`);
+                if(targetButton) {
+                    targetButton.classList.add('active');
+                }
+                
+            } else if (filter === "") {
+                // 情境 B: 清空搜尋欄位
+                
+                // 恢復正常狀態：只顯示當前 active 的分頁
+                const activeTab = document.querySelector('.tab-content.active');
+                const activeTabButton = document.querySelector('.tab-button.active');
+                
+                // 如果沒有 active 狀態（例如剛啟動或清除後）則預設到第一個分頁
+                if (!activeTab || !activeTabButton) {
+                    const defaultTabId = 'AdminLinks'; 
+                    const defaultButton = document.querySelector(`.tab-button[data-tab="${defaultTabId}"]`);
+                    if (defaultButton) {
+                        // 僅執行顯示邏輯，不重複呼叫 openTab
+                        document.getElementById(defaultTabId).style.display = "block";
+                        document.getElementById(defaultTabId).classList.add('active');
+                        defaultButton.classList.add('active');
+                    }
+                }
+            }
+        }
+
+        // 頁面載入時，預設開啟第一個分頁 (保持原樣)
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('AdminLinks').style.display = "block";
+            document.getElementById('AdminLinks').classList.add('active');
+            // 將所有 a 標籤的 title 改為 href
+            const links = document.querySelectorAll("a");
+            links.forEach(link => {
+                link.title = link.href;
+            });
+        });
+    </script>
+</body>
+</html>
