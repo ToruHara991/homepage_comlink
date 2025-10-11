@@ -15,7 +15,23 @@
         #search-input { width: 100%; padding: 10px 15px; border: 2px solid #CED4DA; border-radius: 8px; font-size: 16pt; transition: border-color 0.3s; box-sizing: border-box; }
         #search-input:focus { border-color: #007BFF; outline: none; box-shadow: 0 0 5px rgba(0, 123, 255, 0.25); }
         .announcement-card { background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px; padding: 20px; }
-        .announcement { background: #E3F2FD; border-left: 5px solid #007BFF; padding: 15px; }
+        .announcement { background: #E3F2FD; border-left: 5px solid #007BFF; padding: 15px; font-size: 0.9em; /* 文字小一檔次 */ }
+
+        /* -- 新增：訊息公告折疊樣式 -- */
+        .announcement-toggle {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none; /* 防止選取文字 */
+        }
+        .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+        .announcement-toggle.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+        /* -- 結束新增樣式 -- */
 
         /* 分頁標籤 (Tabs) 樣式 */
         .tabs { display: flex; border-bottom: 2px solid #dee2e6; margin-bottom: 20px; }
@@ -84,20 +100,21 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-tint"></i> 一區-內部資訊系統入口</h1>
+            <h1 style="font-size: 20px;"><i class="fas fa-tint"></i> 一區-內部資訊系統入口</h1>
         </div>
 
         <div class="search-container">
             <input type="text" id="search-input" onkeyup="searchLinks()" placeholder="🔍 快速搜尋系統或部門名稱..." title="輸入任何關鍵字快速過濾連結">
         </div>
 
-        <div class="announcement-card">
-            <h2><i class="fas fa-bullhorn"></i> 訊息公告</h2>
-            <div class="announcement">
-                1. 新進/調職異動同仁各項系統帳號權限申請，請填具「<a href="https://cloud.water.gov.tw/F_Eform200/Index" title="帳號權限申請表" target="_blank">帳號權限申請表</a>」向業管單位提出申請；                 <br>
-                2. 本站參考「8區」的首頁改建
-            </div>
-        </div>
+<div class="announcement-card">
+    <div id="announcement-content" class="announcement">
+      <div><i class="fas fa-bullhorn"></i> 訊息公告</div>
+        1. 新進/調職異動同仁各項系統帳號權限申請，請填具「<a href="https://cloud.water.gov.tw/F_Eform200/Index" title="帳號權限申請表" target="_blank">帳號權限申請表</a>」向業管單位提出申請；
+        <br>
+        2. 本站參考「8區」的首頁改建
+    </div>
+</div>
 
         <div class="tabs">
             <div class="tab-button active" onclick="openTab(event, 'AdminLinks')" data-tab="AdminLinks">
@@ -228,6 +245,23 @@
     </div>
 
     <script>
+        // -- 新增：訊息公告折疊功能 --
+        function toggleAnnouncement() {
+            const content = document.getElementById('announcement-content');
+            const header = document.querySelector('.announcement-toggle');
+            
+            header.classList.toggle('active'); // 用於旋轉圖示
+            
+            // 切換內容的顯示狀態
+            if (content.style.display === "none" || content.style.display === "") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
+            }
+        }
+        // -- 結束新增功能 --
+
+
         // Tab 切換邏輯 (修正：不再呼叫 searchLinks)
         function openTab(evt, tabName) {
             let i, tabcontent, tablinks;
