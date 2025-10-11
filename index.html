@@ -117,18 +117,29 @@
 </div>
 
         <div class="tabs">
-            <div class="tab-button active" onclick="openTab(event, 'AdminLinks')" data-tab="AdminLinks">
-                <i class="fas fa-file-alt"></i> 一般行政常用連結
+
+	    <div class="tab-button" onclick="openTab(event, 'GeneralLinks')" data-tab="GeneralLinks">
+                <i class="fas fa-th-list"></i> 一般(通用)
+	    </div>
+
+            <div class="tab-button" onclick="openTab(event, 'AdminLinks')" data-tab="AdminLinks">
+                <i class="fas fa-file-alt"></i> 行政、會議
             </div>
             <div class="tab-button" onclick="openTab(event, 'OperationLinks')" data-tab="OperationLinks">
                 <i class="fas fa-chart-line"></i> 營運常用連結
             </div>
-            <div class="tab-button" onclick="openTab(event, 'WaterLinks')" data-tab="WaterLinks">
-                <i class="fas fa-water"></i> 供水、漏防、工程常用連結
+	    <div class="tab-button" onclick="openTab(event, 'WaterLinks')" data-tab="WaterLinks">
+	        <i class="fas fa-tint"></i> 供水
+	    </div>
+	    <div class="tab-button" onclick="openTab(event, 'LeakPrevention')" data-tab="LeakPrevention">
+    	        <i class="fas fa-tools"></i> 檢漏
+	    </div>
+	    <div class="tab-button" onclick="openTab(event, 'EngineeringLinks')" data-tab="EngineeringLinks">
+    	        <i class="fas fa-ruler"></i> 工程
             </div>
         </div>
 
-        <div id="AdminLinks" class="tab-content active">
+        <div id="GeneralLinks" class="tab-content active">
             <div class="sub-card internal">
                 <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
                 <div class="links">
@@ -137,16 +148,8 @@
                         <li><a href="https://km.water.gov.tw/" title="知識管理系統" target="_blank"><i class="fas fa-brain"></i>知識管理系統<span class="subtext">(人事室)</span></a></li>
                         <li><a href="https://edoc.water.gov.tw" title="公文系統" target="_blank"><i class="fas fa-file-contract"></i>公文系統<span class="subtext">(總務室)</span></a></li>
                         <li><a href="https://10.100.101.29/tbse/" title="會計系統" target="_blank"><i class="fas fa-calculator"></i>會計系統<span class="subtext">(會計室)</span></a></li>
-                        <li><a href="https://www.water.gov.tw/dist1" title="一區官網" target="_blank"><i class="fas fa-globe"></i>一區官方網站<span class="subtext">(資訊)</span></a></li>
                         <li><a href="https://hrap5.water.gov.tw/hrm/hrm/login.aspx" title="人事作業自動化系統" target="_blank"><i class="fas fa-users"></i>人事自動化系統<span class="subtext">(人事室)</span></a></li>
-                        <li><a href="https://cloud.water.gov.tw/Menu/Sub_NonConsumable" title="非消耗品系統" target="_blank"><i class="fas fa-box"></i>非消耗品系統<span class="subtext">(總務室)</span></a></li>
-                        <li><a href="http://ecs1" title="一區電子會議" target="_blank"><i class="fas fa-video"></i>電子會議<span class="subtext">(總務室)</span></a></li>
-                        <li><a href="microsoft-edge:https://10.100.50.41:9080/fp/login.jsp" title="財產管理資訊系統" target="_blank"><i class="fas fa-building"></i>財產管理系統(請用Edge開啟)<span class="subtext">(總務室)</span></a></li>
-                        <li><a href="microsoft-edge:https://10.100.50.20:9080/mr/login.jsp" title="材料管理資訊系統" target="_blank"><i class="fas fa-cubes"></i>材料管理系統(請用Edge開啟)<span class="subtext">(物料課)</span></a></li>
-                        <li><a href="http://10.100.70.8:8038/" title="租賃管理資訊系統" target="_blank"><i class="fas fa-key"></i>租賃管理資訊系統<span class="subtext">(總務室)</span></a></li>
                         <li><a href="https://cloud.water.gov.tw/Menu/Main" title="台水綜合雲系統" target="_blank"><i class="fas fa-cloud"></i>台水綜合雲系統<span class="subtext">(總處)</span></a></li>
-                        <li><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_ZjhmMDlhZDktYjU3MS00ZmJhLTk2ODUtZmZiNGVhYjZlNGYy%40thread.v2/0?context=%7b%22Tid%22%3a%22db23651c-0c8e-47f7-ae89-28a0654c974c%22%2c%22Oid%22%3a%22e77d2e84-c78c-405b-826c-16c52f236e95%22%7d" title="總處第一會議室" target="_blank"><i class="fas fa-desktop"></i>總處第一會議室<span class="subtext">(Teams)</span></a></li>
-                        <li><a href="https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmeetup-join%2F19%3Ameeting_N2E2ZmQ1MjQtN2M2ZS00NTg3LTllZjgtNzJmOGMwMzc4Zjdl%40thread.v2%2F0%3Fcontext%3D%257b%2522Tid%2522%253a%2522db23651c-0c8e-47f7-ae89-28a0654c974c%2522%252c%2522Oid%2522%253a%2522e1d904d0-361f-42b9-9d95-dda69587b905%2522%257d%26anon%3Dtrue&type=meetup-join&deeplinkId=a012ae26-ec22-4af0-8d8a-03106b109f8f&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true" title="總處第二會議室" target="_blank"><i class="fas fa-desktop"></i>總處第二會議室<span class="subtext">(Teams)</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -157,12 +160,37 @@
                         <li><a href="https://www.cwa.gov.tw/V8/C/" title="中央氣象署" target="_blank"><i class="fas fa-cloud-sun"></i>交通部中央氣象署</a></li>
                         <li><a href="https://www.osha.gov.tw/" title="勞動部職業安全衛生署" target="_blank"><i class="fas fa-hard-hat"></i>勞動部職業安全衛生署</a></li>
                         <li><a href="https://web.pcc.gov.tw/pis/main/pis/" title="政府採購網" target="_blank"><i class="fas fa-shopping-cart"></i>政府採購網</a></li>
+                        <li><a href="https://elearn.moenv.gov.tw/Default.aspx" title="台北e大學習網" target="_blank"><i class="fas fa-graduation-cap"></i>台北e大</a></li>
+                        <li><a href="https://elearning/mpage/" title="環境教育終身學習網" target="_blank"><i class="fas fa-graduation-cap"></i>環境教育終身學習網</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="AdminLinks" class="tab-content active">
+            <div class="sub-card internal">
+                <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
+                <div class="links">
+                    <ul>
+                        <li><a href="https://www.water.gov.tw/dist1" title="一區官網" target="_blank"><i class="fas fa-globe"></i>一區官方網站<span class="subtext">(資訊)</span></a></li>
+                        <li><a href="https://cloud.water.gov.tw/Menu/Sub_NonConsumable" title="非消耗品系統" target="_blank"><i class="fas fa-box"></i>非消耗品系統<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="http://ecs1" title="一區電子會議" target="_blank"><i class="fas fa-video"></i>電子會議<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="microsoft-edge:https://10.100.50.41:9080/fp/login.jsp" title="財產管理資訊系統" target="_blank"><i class="fas fa-building"></i>財產管理系統(請用Edge開啟)<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="microsoft-edge:https://10.100.50.20:9080/mr/login.jsp" title="材料管理資訊系統" target="_blank"><i class="fas fa-cubes"></i>材料管理系統(請用Edge開啟)<span class="subtext">(物料課)</span></a></li>
+                        <li><a href="http://10.100.70.8:8038/" title="租賃管理資訊系統" target="_blank"><i class="fas fa-key"></i>租賃管理資訊系統<span class="subtext">(總務室)</span></a></li>
+                        <li><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_ZjhmMDlhZDktYjU3MS00ZmJhLTk2ODUtZmZiNGVhYjZlNGYy%40thread.v2/0?context=%7b%22Tid%22%3a%22db23651c-0c8e-47f7-ae89-28a0654c974c%22%2c%22Oid%22%3a%22e77d2e84-c78c-405b-826c-16c52f236e95%22%7d" title="總處第一會議室" target="_blank"><i class="fas fa-desktop"></i>總處第一會議室<span class="subtext">(Teams)</span></a></li>
+                        <li><a href="https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmeetup-join%2F19%3Ameeting_N2E2ZmQ1MjQtN2M2ZS00NTg3LTllZjgtNzJmOGMwMzc4Zjdl%40thread.v2%2F0%3Fcontext%3D%257b%2522Tid%2522%253a%2522db23651c-0c8e-47f7-ae89-28a0654c974c%2522%252c%2522Oid%2522%253a%2522e1d904d0-361f-42b9-9d95-dda69587b905%2522%257d%26anon%3Dtrue&type=meetup-join&deeplinkId=a012ae26-ec22-4af0-8d8a-03106b109f8f&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true" title="總處第二會議室" target="_blank"><i class="fas fa-desktop"></i>總處第二會議室<span class="subtext">(Teams)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sub-card external">
+                <h3><i class="fas fa-external-link-alt"></i> 外部連結</h3>
+                <div class="links external">
+                    <ul>
                         <li><a href="https://subsidy.nat.gov.tw/" title="民間團體捐助系統" target="_blank"><i class="fas fa-donate"></i>民間團體捐助系統</a></li>
                         <li><a href="https://landquery.klcg.gov.tw/query/valueprice.jsp?menu=true&type=P" title="基隆市公告土地現值查詢" target="_blank"><i class="fas fa-map-marker-alt"></i>基隆公告土地現值查詢</a></li>
                         <li><a href="https://luz.tcd.gov.tw/WEB/" title="全國土地使用分區查詢系統" target="_blank"><i class="fas fa-map"></i>全國土地使用查詢系統</a></li>
                         <li><a href="https://www.facebook.com/www.water1/?locale=zh_TW" title="西勢水庫FB" target="_blank"><i class="fab fa-facebook"></i>西勢水庫FaceBook</a></li>
-                        <li><a href="https://elearn.moenv.gov.tw/Default.aspx" title="台北e大學習網" target="_blank"><i class="fas fa-graduation-cap"></i>台北e大</a></li>
-                        <li><a href="https://elearning/mpage/" title="環境教育終身學習網" target="_blank"><i class="fas fa-graduation-cap"></i>環境教育終身學習網</a></li>
                         <li><a href="https://pdps.nat.gov.tw/Login/Pdis/Login" title="法務部公職人員財產申報" target="_blank"><i class="fas fa-file-signature"></i>法務部公職人員財產申報</a></li>
                         <li><a href="https://www.pcc.gov.tw/content/index?type=C&eid=3309&lang=1" title="採購法解釋函" target="_blank"><i class="fas fa-gavel"></i>採購法解釋函及相關函文</a></li>
                         <li><a href="https://pdps.nat.gov.tw/Login/CY/Login_01V1" title="監察院公職人員財產申報" target="_blank"><i class="fas fa-balance-scale"></i>監察院公職人員財產申報</a></li>
@@ -208,21 +236,39 @@
                 <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
                 <div class="links">
                     <ul>
+                        <li><a href="https://info01.water.gov.tw/twcwm/login.jsp" title="新版供水監測平台" target="_blank"><i class="fas fa-chart-area"></i>供水監測平台新版<span class="subtext">(操作課)</span></a></li>
+                        <li><a href="https://10.100.1.166/" title="水質預警系統" target="_blank"><i class="fas fa-flask"></i>水質預警系統<span class="subtext">(水質課)</span></a></li>
+                        <li><a href="https://w3.water.gov.tw/wateroffadmin/login" title="停水資訊查詢系統(後台)" target="_blank"><i class="fas fa-exclamation-triangle"></i>停水資訊查詢系統<span class="subtext">(後台)</span></a></li>
+                        <li><a href="https://eamb.water.gov.tw/Menu/Main" title="場站保修管理系統" target="_blank"><i class="fas fa-tools"></i>場站保修管理系統<span class="subtext">(操作課)</span></a></li>
+                        <li><a href="https://water007.water.gov.tw/wfsystem/Login" title="供水管理系統" target="_blank"><i class="fas fa-chart-pie"></i>供水管理系統<span class="subtext">(操作課)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sub-card external">
+                <h3><i class="fas fa-external-link-alt"></i> 外部連結</h3>
+                <div class="links external">
+                    <ul>
+                        <li><a href="https://www.windy.com/?25.081,121.654,11" title="氣象Windy.com" target="_blank"><i class="fas fa-wind"></i>氣象(Windy)</a></li>
+                        <li><a href="https://pcic.pcc.gov.tw/pwc-web/" title="公共工程雲端服務網" target="_blank"><i class="fas fa-folder-open"></i>公共工程雲端服務網</a></li>
+                        <li><a href="https://tppr.wra.gov.tw/sencad/" title="水庫集水區暨自來水水質水量保護區查詢系統" target="_blank"><i class="fas fa-mountain"></i>水庫集水區及保護區查詢</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="LeakPrevention" class="tab-content">
+            <div class="sub-card internal">
+                <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
+                <div class="links">
+                    <ul>
                         <li><a href="http://10.1.1.46/ADlogin/login.aspx?Zone=01&System=wgis" title="圖資作業查詢系統(web)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(web)<span class="subtext">(圖資中心)</span></a></li>
                         <li><a href="https://gis.water.gov.tw/water_mobile/#/" title="圖資作業查詢系統(行動)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(行動)<span class="subtext">(圖資中心)</span></a></li>
                         <li><a href="http://10.1.1.50/csmap/" title="圖資查詢系統(3D圖台)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(3D圖台)<span class="subtext">(圖資中心)</span></a></li>
                         <li><a href="http://10.1.1.46/ADlogin/login.aspx?System=intraweb" title="圖資作業管理系統" target="_blank"><i class="fas fa-file-download"></i>圖資作業管理<span class="subtext">(圖資中心)</span></a></li>
-                        <li><a href="https://w3.water.gov.tw/crims/" title="工程施工即時影像資訊管理系統" target="_blank"><i class="fas fa-video"></i>工程施工即時影像<span class="subtext">(工安課)</span></a></li>
-                        <li><a href="https://info01.water.gov.tw/twcwm/login.jsp" title="新版供水監測平台" target="_blank"><i class="fas fa-chart-area"></i>供水監測平台新版<span class="subtext">(操作課)</span></a></li>
-                        <li><a href="http://10.100.101.238/Home/Logon?ReturnUrl=%2f" title="二代工程管理系統" target="_blank"><i class="fas fa-cogs"></i>二代工程管理系統<span class="subtext">(工務課)</span></a></li>
-                        <li><a href="https://10.100.1.166/" title="水質預警系統" target="_blank"><i class="fas fa-flask"></i>水質預警系統<span class="subtext">(水質課)</span></a></li>
                         <li><a href="http://10.100.1.150/pw/ADLogin.aspx" title="修漏系統" target="_blank"><i class="fas fa-faucet-drip"></i>修漏系統<span class="subtext">(漏防課)</span></a></li>
                         <li><a href="https://w3.water.gov.tw/wateroffadmin/login" title="停水資訊查詢系統(後台)" target="_blank"><i class="fas fa-exclamation-triangle"></i>停水資訊查詢系統<span class="subtext">(後台)</span></a></li>
                         <li><a href="http://10.100.1.150/cpweb/NewHome.html" title="檢漏管理系統" target="_blank"><i class="fas fa-search"></i>檢漏管理系統<span class="subtext">(漏防課)</span></a></li>
-                        <li><a href="https://eamb.water.gov.tw/Menu/Main" title="場站保修管理系統" target="_blank"><i class="fas fa-tools"></i>場站保修管理系統<span class="subtext">(操作課)</span></a></li>
                         <li><a href="https://wada.water.gov.tw/wada/" title="總處WADA系統" target="_blank"><i class="fas fa-database"></i>總處WADA系統<span class="subtext">(漏防課)</span></a></li>
                         <li><a href="https://10.100.1.80/login.aspx?ReturnUrl=/" title="分區計量管網管理系統" target="_blank"><i class="fas fa-network-wired"></i>分區計量管網管理系統<span class="subtext">(漏防課)</span></a></li>
-                        <li><a href="https://water007.water.gov.tw/wfsystem/Login" title="供水管理系統" target="_blank"><i class="fas fa-chart-pie"></i>供水管理系統<span class="subtext">(操作課)</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -234,9 +280,32 @@
                         <li><a href="https://egnss.nlsc.gov.tw/trans/index.aspx" title="e_GNSS三維座標轉換服務" target="_blank"><i class="fas fa-globe"></i>e-GNSS三維坐標轉換服務</a></li>
                         <li><a href="https://kct.klcg.gov.tw/dig/Civilian/Default.aspx" title="基隆市道路挖掘申請" target="_blank"><i class="fas fa-road"></i>基隆市道路挖掘申請</a></li>
                         <li><a href="https://roadmt.maintenance.ntpc.gov.tw/iROAD" title="新北市道路挖掘申請" target="_blank"><i class="fas fa-road"></i>新北市道路挖掘申請</a></li>
-                        <li><a href="https://www.windy.com/?25.081,121.654,11" title="氣象Windy.com" target="_blank"><i class="fas fa-wind"></i>氣象(Windy)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="EngineeringLinks" class="tab-content">
+            <div class="sub-card internal">
+                <h3><i class="fas fa-link"></i> 內部連結 (公司內部連結)</h3>
+                <div class="links">
+                    <ul>
+                        <li><a href="http://10.1.1.46/ADlogin/login.aspx?Zone=01&System=wgis" title="圖資作業查詢系統(web)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(web)<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="https://gis.water.gov.tw/water_mobile/#/" title="圖資作業查詢系統(行動)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(行動)<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="http://10.1.1.50/csmap/" title="圖資查詢系統(3D圖台)" target="_blank"><i class="fas fa-map-marked-alt"></i>圖資查詢系統(3D圖台)<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="http://10.1.1.46/ADlogin/login.aspx?System=intraweb" title="圖資作業管理系統" target="_blank"><i class="fas fa-file-download"></i>圖資作業管理<span class="subtext">(圖資中心)</span></a></li>
+                        <li><a href="https://w3.water.gov.tw/crims/" title="工程施工即時影像資訊管理系統" target="_blank"><i class="fas fa-video"></i>工程施工即時影像<span class="subtext">(工安課)</span></a></li>
+                        <li><a href="http://10.100.101.238/Home/Logon?ReturnUrl=%2f" title="二代工程管理系統" target="_blank"><i class="fas fa-cogs"></i>二代工程管理系統<span class="subtext">(工務課)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sub-card external">
+                <h3><i class="fas fa-external-link-alt"></i> 外部連結</h3>
+                <div class="links external">
+                    <ul>
+                        <li><a href="https://dgs.thb.gov.tw/THBDGS/" title="公路局挖掘申請" target="_blank"><i class="fas fa-road"></i>公路局挖掘申請</a></li>
+                        <li><a href="https://kct.klcg.gov.tw/dig/Civilian/Default.aspx" title="基隆市道路挖掘申請" target="_blank"><i class="fas fa-road"></i>基隆市道路挖掘申請</a></li>
+                        <li><a href="https://roadmt.maintenance.ntpc.gov.tw/iROAD" title="新北市道路挖掘申請" target="_blank"><i class="fas fa-road"></i>新北市道路挖掘申請</a></li>
                         <li><a href="https://pcic.pcc.gov.tw/pwc-web/" title="公共工程雲端服務網" target="_blank"><i class="fas fa-folder-open"></i>公共工程雲端服務網</a></li>
-                        <li><a href="https://tppr.wra.gov.tw/sencad/" title="水庫集水區暨自來水水質水量保護區查詢系統" target="_blank"><i class="fas fa-mountain"></i>水庫集水區及保護區查詢</a></li>
                     </ul>
                 </div>
             </div>
