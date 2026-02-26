@@ -1,0 +1,676 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣自來水公司 - 綜合業務導引系統</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 企業識別色 - 台水藍 */
+            --water-deep: #004e92;
+            --water-medium: #007bb6;
+            --water-light: #e0f7fa;
+            --bg-body: #f0f4f8;
+            --bg-card: #ffffff;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --success: #00c853;
+            --warning: #f57c00;
+            --danger: #d32f2f;
+            --border-radius: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,78,146,0.1);
+            --shadow-md: 0 4px 8px rgba(0,78,146,0.15);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+            background: var(--bg-body);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        /* --- 1. 全局 Header 與 切換器 --- */
+        .global-header {
+            flex-shrink: 0;
+            background: var(--bg-card);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 3px solid var(--water-medium);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-placeholder {
+            width: 36px; height: 36px;
+            background: var(--water-deep);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: bold; font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .brand-title h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--water-deep);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .brand-title p { margin: 0; font-size: 0.8rem; color: var(--text-secondary); }
+
+        /* 系統切換按鈕 (Tabs) */
+        .system-switcher {
+            display: flex;
+            background: #f0f4f8;
+            padding: 4px;
+            border-radius: 25px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .tab-btn {
+            padding: 8px 24px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            border-radius: 20px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover { color: var(--water-medium); }
+
+        .tab-btn.active {
+            background: var(--water-medium);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            font-weight: 700;
+        }
+
+        /* --- 2. 應用程式容器 --- */
+        .app-container {
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        /* 基礎視圖樣式 - 預設隱藏 */
+        .app-view {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            padding: 15px;
+            display: none; 
+            animation: fadeIn 0.3s ease-in-out;
+            height: 100%;
+            overflow: hidden; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 通用 UI 元件 (共用樣式) --- */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--water-deep);
+        }
+        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .card-header h2 { margin: 0; font-size: 1.2rem; color: var(--water-deep); }
+        .card-icon { font-size: 1.5rem; }
+
+        .btn-action {
+            padding: 4px 10px; background: #fff; border: 1px solid var(--warning);
+            border-radius: 4px; cursor: pointer; font-size: 0.8rem; color: var(--warning); font-weight: bold;
+            transition: all 0.2s;
+        }
+        .btn-action:hover { background: #fffde7; }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .info-box {
+            background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 12px 15px;
+            border-top: 3px solid var(--water-medium);
+        }
+        .info-box.who { border-top-color: var(--warning); }
+        .box-label { font-size: 0.8rem; color: #78909c; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
+        .box-val { font-size: 1.1rem; color: #333; font-weight: 500; }
+
+        .notes-area {
+            background: #fffde7; border: 1px solid #fff59d; border-radius: var(--border-radius);
+            padding: 15px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
+            flex-grow: 1; min-height: 0; /* 讓 flex item 可捲動 */
+        }
+        .notes-list { flex-grow: 1; overflow-y: auto; margin: 0; padding-left: 20px; font-size: 1rem; color: #3e2723; line-height: 1.6; }
+        .notes-list li { margin-bottom: 6px; }
+        
+        .step-selector {
+            background: #fafafa; padding: 10px; border-radius: 6px;
+            border: 1px solid #eee; display: flex; align-items: center; margin-bottom: 15px;
+        }
+        .step-selector select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; flex-grow: 1; font-size: 1rem; cursor: pointer; }
+
+        /* --- 系統 A: 退還保證金 (Grid 佈局) --- */
+        #view-refund {
+            /* 預設 display: none 由 .app-view 處理 */
+            grid-template-columns: 460px 1fr;
+            gap: 20px;
+        }
+        #view-refund.active {
+            display: grid; /* 只有 active 時才顯示 */
+        }
+
+        @media (max-width: 1024px) { #view-refund.active { grid-template-columns: 1fr; overflow-y: auto; } .rf-sidebar { display: none; } }
+
+        /* 左側 Checklist */
+        .rf-sidebar {
+            background: var(--bg-card); border-radius: var(--border-radius); padding: 15px;
+            box-shadow: var(--shadow-sm); border-top: 4px solid var(--water-medium);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .progress-wrapper { height: 5px; background: #eee; border-radius: 3px; margin-bottom: 10px; flex-shrink: 0; }
+        .progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.3s; }
+        .checklist-scroll { flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: start; }
+        
+        .separator { grid-column: 1 / -1; font-size: 0.95rem; font-weight: 700; color: var(--water-deep); margin: 10px 0 5px; background: #e3f2fd; padding: 6px; border-radius: 4px; }
+        .checklist-item { display: flex; gap: 8px; padding: 8px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; }
+        .checklist-item:hover { background: #f9f9f9; border-color: var(--water-medium); }
+        .checklist-item.checked { background: #f1f8e9; border-color: var(--success); }
+        .checklist-item.checked .item-title { text-decoration: line-through; color: #aaa; }
+        .item-title { font-size: 0.95rem; font-weight: 700; color: #333; line-height: 1.3; }
+        .item-desc { font-size: 0.8rem; color: #666; margin-top: 2px; }
+        .chk-box { width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff; }
+        .checklist-item.checked .chk-box { background: var(--success); border-color: var(--success); color: #fff; font-weight: bold; }
+        .checklist-item.checked .chk-box::after { content: '✓'; }
+        .tag-heir { display: inline-block; background: #d32f2f; color: #fff; font-size: 0.7rem; padding: 1px 4px; border-radius: 3px; vertical-align: middle; margin-right: 4px;}
+
+        /* 右側主內容 */
+        .rf-main { display: flex; flex-direction: column; gap: 15px; overflow: hidden; height: 100%; }
+        
+        /* 篩選區樣式 */
+        .filter-grid { display: flex; gap: 20px; }
+        .filter-col { flex: 1; }
+        .radio-group { display: flex; flex-direction: column; gap: 6px; margin-top: 5px; }
+        .radio-btn { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f5f5f5; border-radius: 6px; cursor: pointer; font-size: 0.95rem; border: 1px solid transparent; }
+        .radio-btn.active { background: #e1f5fe; color: #0277bd; border-color: #0288d1; font-weight: 700; }
+        .radio-btn.special { border-left: 3px solid var(--warning); }
+
+        /* --- 系統 B: 自動讀表 (單欄佈局) --- */
+        #view-autoread {
+            flex-direction: column;
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            overflow-y: auto;
+            /* 關鍵修正：預設不設定 display: flex，由 .active 類別控制 */
+        }
+        #view-autoread.active {
+            display: flex; /* 只有 active 時才顯示 */
+        }
+
+        .ar-dashboard {
+            background: #fff; border-radius: var(--border-radius); padding: 25px;
+            box-shadow: var(--shadow-md); 
+            border-top: 5px solid var(--water-medium); /* 改回藍色系 */
+        }
+
+        .highlight-code { background: #eee; padding: 2px 5px; border-radius: 3px; font-family: monospace; color: #d32f2f; font-weight: bold; }
+
+        /* 編輯區 */
+        textarea.edit-area { width: 100%; height: 100%; padding: 10px; border: 1px solid var(--water-medium); border-radius: 4px; font-size: 1rem; display: none; resize: none; }
+
+        /* 自動讀表系統的藍色系覆寫 */
+        .ar-notes-area {
+            margin-top: 20px; 
+            background: #e3f2fd; /* 藍色底 */
+            border: 1px solid #bbdefb; /* 藍色邊框 */
+            border-radius: var(--border-radius);
+            padding: 15px; 
+            box-shadow: var(--shadow-sm); 
+            display: flex; 
+            flex-direction: column;
+        }
+        
+        .ar-notes-header {
+            display: flex; justify-content: space-between; margin-bottom: 10px; 
+            border-bottom: 1px dashed #2196f3; padding-bottom: 5px;
+        }
+        
+        .ar-notes-list {
+            color: #0d47a1; /* 深藍色文字 */
+            margin: 0; padding-left: 20px; font-size: 1rem; line-height: 1.6;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 1. 全局 Header -->
+<header class="global-header">
+    <div class="brand">
+        <div class="logo-placeholder">台水</div>
+        <div class="brand-title">
+            <h1>台灣自來水公司</h1>
+            <p>綜合業務導引系統</p>
+        </div>
+    </div>
+    
+    <!-- 系統切換按鈕 -->
+    <div class="system-switcher">
+        <button class="tab-btn active" onclick="switchSystem('refund')">
+            💰 退還保證金
+        </button>
+        <button class="tab-btn" onclick="switchSystem('autoread')">
+            📊 自動讀表新裝
+        </button>
+    </div>
+</header>
+
+<!-- 2. 應用程式內容 -->
+<div class="app-container">
+
+    <!-- =========== 系統 A: 退還保證金 (Grid Layout) =========== -->
+    <div id="view-refund" class="app-view active">
+        
+        <!-- A-1. 左側檢核清單 -->
+        <aside class="rf-sidebar">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <h3 style="margin:0; color:var(--water-deep);">📋 必備文件檢核</h3>
+                <span id="rf-progressText" style="font-weight:bold; color:var(--water-medium);">0/0</span>
+            </div>
+            <div class="progress-wrapper"><div id="rf-progressBar" class="progress-fill"></div></div>
+            <div id="rf-checklistContainer" class="checklist-scroll">
+                <!-- JS 動態產生 -->
+            </div>
+        </aside>
+
+        <!-- A-2. 右側主內容 -->
+        <main class="rf-main">
+            <!-- 篩選器 -->
+            <section class="card" style="flex-shrink:0;">
+                <div class="card-header">
+                    <span class="card-icon">🔍</span>
+                    <h2>文件準備小幫手</h2>
+                </div>
+                <div class="filter-grid">
+                    <div class="filter-col">
+                        <strong style="color:var(--water-deep)">1. 申請身分</strong>
+                        <div class="radio-group">
+                            <label class="radio-btn active"><input type="radio" name="rf-identity" value="personal" checked onchange="rf_updateChecklist()"> 個人用戶</label>
+                            <label class="radio-btn"><input type="radio" name="rf-identity" value="company" onchange="rf_updateChecklist()"> 公司行號</label>
+                            <label class="radio-btn special"><input type="radio" name="rf-identity" value="heir" onchange="rf_updateChecklist()"> 繼承人</label>
+                        </div>
+                    </div>
+                    <div class="filter-col">
+                        <strong style="color:var(--water-deep)">2. 收據狀況</strong>
+                        <div class="radio-group">
+                            <label class="radio-btn active"><input type="radio" name="rf-receipt" value="kept" checked onchange="rf_updateChecklist()"> 正本在手</label>
+                            <label class="radio-btn"><input type="radio" name="rf-receipt" value="lost" onchange="rf_updateChecklist()"> 已遺失</label>
+                        </div>
+                    </div>
+                    <div class="filter-col">
+                        <strong style="color:var(--water-deep)">3. 退款帳戶</strong>
+                        <div class="radio-group">
+                            <label class="radio-btn active"><input type="radio" name="rf-account" value="match" checked onchange="rf_updateChecklist()"> 正常/相符</label>
+                            <label class="radio-btn"><input type="radio" name="rf-account" value="mismatch" onchange="rf_updateChecklist()"> 無存摺/不符</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 流程與注意事項 -->
+            <section class="card" style="flex-grow:1; display:flex; flex-direction:column; min-height:0;">
+                <div class="step-selector">
+                    <strong style="color:var(--water-deep); margin-right:10px;">📍 流程階段：</strong>
+                    <select id="rf-currentStep">
+                        <option value="" disabled selected>-- 請選擇步驟 --</option>
+                        <optgroup label="第一階段：申請文件準備">
+                            <option value="s1_personal">個人用戶準備</option>
+                            <option value="s1_company">公司行號準備</option>
+                            <option value="s1_heir">繼承人準備 (特殊)</option>
+                        </optgroup>
+                        <optgroup label="第二階段：櫃台與內部作業">
+                            <option value="s2_internal">內部表單產出</option>
+                        </optgroup>
+                        <optgroup label="第三階段：會計核銷與決行">
+                            <option value="s3_verify">核章與決行</option>
+                        </optgroup>
+                        <optgroup label="第四階段：撥款與領取">
+                            <option value="s4_remit">撥款領取</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="info-grid" style="margin-top:0;">
+                    <div class="info-box">
+                        <div class="box-label">⏩ 下一階段</div>
+                        <div class="box-val" id="rf-nextAction">請選擇步驟...</div>
+                    </div>
+                    <div class="info-box who">
+                        <div class="box-label">👤 負責單位</div>
+                        <div class="box-val" id="rf-inCharge">--</div>
+                    </div>
+                </div>
+
+                <!-- 注意事項 -->
+                <div class="notes-area" style="margin-top:15px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px dashed #fbc02d; padding-bottom:5px;">
+                        <strong style="color:#f57f17; font-size:1rem;">⚠️ 關鍵注意事項</strong>
+                        <button class="btn-action" id="rf-btnEdit" onclick="rf_toggleEdit()">✏️ 編輯</button>
+                    </div>
+                    <ul id="rf-notesList" class="notes-list">
+                        <li>請選擇上方流程步驟以查看詳細說明。</li>
+                    </ul>
+                    <textarea id="rf-editArea" class="edit-area"></textarea>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- =========== 系統 B: 自動讀表新裝 (Single Column) =========== -->
+    <div id="view-autoread" class="app-view">
+        
+        <div class="ar-dashboard">
+            <div class="card-header" style="border-bottom: 2px solid var(--water-medium);">
+                <span class="card-icon" style="color: var(--water-deep);">📊</span>
+                <h2>自動讀表作業導引</h2>
+            </div>
+            
+            <div class="step-selector">
+                <strong style="color:var(--water-deep); margin-right:10px;">📍 目前進度：</strong>
+                <select id="ar-currentStep">
+                    <optgroup label="第一階段：受理與設計">
+                        <option value="step1_start">用戶剛提出申請</option>
+                        <option value="step1_counter">櫃台已受理 (文件檢核完畢)</option>
+                        <option value="step1_design">新裝設計完成</option>
+                        <option value="step1_calc">已計算工程款</option>
+                        <option value="step1_pay">用戶已完成繳費</option>
+                    </optgroup>
+                    <optgroup label="第二階段：現場安裝">
+                        <option value="step2_install">本公司已安裝 C 級水量計</option>
+                        <option value="step2_notify">已通知廠商進場</option>
+                        <option value="step2_vendor">廠商已安裝傳輸介面</option>
+                    </optgroup>
+                    <optgroup label="第三階段：系統試車">
+                        <option value="step3_upload">已匯入監測系統</option>
+                        <option value="step3_mdvpn">已函報 MDVPN 清冊</option>
+                        <option value="step3_testing">試車比對中</option>
+                    </optgroup>
+                    <optgroup label="第四階段：驗收保固">
+                        <option value="step4_passed">試車合格</option>
+                        <option value="step4_proof">已出具安裝工地證明書</option>
+                        <option value="step4_accept">已完成驗收付款</option>
+                        <option value="step4_warranty">已完成系統建檔 (保固開始)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-box">
+                    <div class="box-label">⏩ 下一階段作業</div>
+                    <div class="box-val" id="ar-nextAction">櫃台受理案件</div>
+                </div>
+                <div class="info-box who">
+                    <div class="box-label">👤 負責單位 / 人員</div>
+                    <div class="box-val" id="ar-inCharge">櫃台受理人員</div>
+                </div>
+            </div>
+
+            <!-- 自動讀表注意事項 (改為藍色系) -->
+            <div class="ar-notes-area">
+                <div class="ar-notes-header">
+                    <strong style="color:var(--water-deep); font-size:1rem;">⚠️ 關鍵注意事項 & 系統代碼</strong>
+                </div>
+                <ul id="ar-notesList" class="ar-notes-list">
+                    <li>確認用戶申請文件齊全</li>
+                    <li>進入系統 <span class="highlight-code">BU1100</span> 進行受理掛號</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // === 通用功能：系統切換 ===
+    function switchSystem(sysId) {
+        // 更新按鈕狀態
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        // 更新視圖
+        document.querySelectorAll('.app-view').forEach(view => {
+            view.classList.remove('active');
+            // 注意：不要直接設定 style.display = 'none'，讓 css 的 .app-view.active 控制
+            // 為了確保不重疊，移除 active class，css 會自動隱藏
+        });
+        
+        const target = document.getElementById(`view-${sysId}`);
+        target.classList.add('active');
+    }
+
+    // ==========================================
+    // 系統 A: 退還保證金 邏輯 (Namespace: rf_)
+    // ==========================================
+    
+    const rf_docs = {
+        appForm: { id: "03", title: "退還保證金申請書", desc: "蓋用戶印章/公司大小章" },
+        bankCopy: { id: "04", title: "存摺封面影本", desc: "蓋限辦章，勿蓋空白處" },
+        companyReg: { id: "05", title: "工商登記資料", desc: "商工登記公示資料" },
+        idCopy: { id: "06", title: "身分證影本", desc: "蓋限辦章，勿蓋空白處" },
+        repIdCopy: { id: "06", title: "負責人身分證影本", desc: "蓋限辦章，勿蓋空白處" },
+        // 特殊繼承
+        heirApp: { id: "08", title: "繼承申請書", desc: "填寫全部繼承人+蓋私章", special: true },
+        heirSystem: { id: "09", title: "繼承系統表", desc: "填寫繼承關係+蓋私章", special: true },
+        household: { id: "10", title: "戶籍謄本", desc: "除戶部分+所有繼承人", special: true },
+        taxProof: { id: "11", title: "遺產稅證明", desc: "繳清或免稅證明書", special: true },
+        // 附件
+        receipt: { id: "附", title: "保證金收據正本", desc: "黏貼於空白A4紙" },
+        lostAffidavit: { id: "切", title: "遺失切結書", desc: "收據遺失專用" },
+        payApp: { id: "附", title: "付款申請書", desc: "帳戶不符/繼承案件必備" },
+        acctAffidavit: { id: "切", title: "匯款帳戶切結書", desc: "帳戶不符使用" },
+        // 內部
+        internal01: { id: "01", title: "會計核銷單", desc: "正面 (經辦核章)", type: "internal" },
+        internal02: { id: "02", title: "會計請購單", desc: "背面 (留意決行層級)", type: "internal" },
+        internal07: { id: "07", title: "退費申請表", desc: "1-4-4 表單", type: "internal" },
+        internal08: { id: "08", title: "繳費證明(21)", desc: "確認無欠費", type: "internal" },
+        internal09: { id: "09", title: "未對銷清冊", desc: "收據遺失需檢附", type: "internal" }
+    };
+
+    function rf_updateChecklist() {
+        const identity = document.querySelector('input[name="rf-identity"]:checked').value;
+        const receipt = document.querySelector('input[name="rf-receipt"]:checked').value;
+        const account = document.querySelector('input[name="rf-account"]:checked').value;
+
+        let userDocs = [rf_docs.appForm];
+        
+        if (identity === 'personal') userDocs.push(rf_docs.idCopy);
+        else if (identity === 'company') { userDocs.push(rf_docs.companyReg); userDocs.push(rf_docs.repIdCopy); }
+        else if (identity === 'heir') {
+            userDocs.push(rf_docs.idCopy); // 代表人
+            userDocs.push(rf_docs.payApp); 
+            userDocs.push(rf_docs.heirApp); userDocs.push(rf_docs.heirSystem);
+            userDocs.push(rf_docs.household); userDocs.push(rf_docs.taxProof);
+        }
+
+        if (receipt === 'kept') userDocs.push(rf_docs.receipt);
+        else userDocs.push(rf_docs.lostAffidavit);
+
+        if (account === 'match' && identity !== 'heir') userDocs.push(rf_docs.bankCopy);
+        else {
+            userDocs.push(rf_docs.bankCopy);
+            if (identity !== 'heir') { userDocs.push(rf_docs.payApp); userDocs.push(rf_docs.acctAffidavit); }
+        }
+
+        let internalDocs = [rf_docs.internal01, rf_docs.internal02, rf_docs.internal07, rf_docs.internal08];
+        if (receipt === 'lost') internalDocs.push(rf_docs.internal09);
+
+        // 去重與排序
+        userDocs = [...new Set(userDocs)].sort(rf_sortDocs);
+        internalDocs = internalDocs.sort(rf_sortDocs);
+
+        const container = document.getElementById('rf-checklistContainer');
+        container.innerHTML = '';
+        rf_createSection(container, "用戶須備文件", "sec-user", userDocs);
+        rf_createSection(container, "櫃台產出文件", "sec-internal", internalDocs);
+        
+        rf_updateProgress();
+    }
+
+    function rf_sortDocs(a, b) {
+        const idA = isNaN(a.id) ? 99 : parseInt(a.id);
+        const idB = isNaN(b.id) ? 99 : parseInt(b.id);
+        return idA - idB;
+    }
+
+    function rf_createSection(container, title, className, items) {
+        const sep = document.createElement('div');
+        sep.className = `separator ${className}`;
+        sep.textContent = title;
+        container.appendChild(sep);
+
+        items.forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.className = `checklist-item`;
+            div.onclick = (e) => {
+                if(e.target.type!=='checkbox'){ const cb = div.querySelector('input'); cb.checked=!cb.checked; cb.dispatchEvent(new Event('change')); }
+            };
+
+            const chkBox = document.createElement('div');
+            chkBox.className = 'chk-box';
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.style.display = 'none';
+            checkbox.onchange = function() { this.checked ? div.classList.add('checked') : div.classList.remove('checked'); rf_updateProgress(); };
+            
+            chkBox.appendChild(checkbox);
+            div.appendChild(chkBox);
+
+            const content = document.createElement('div');
+            content.style.flex = '1';
+            
+            let titleText = item.title;
+            if(item.special) titleText = `<span class="tag-heir">繼承</span>` + titleText;
+            else if(item.id.length <= 2) titleText = item.id + '. ' + titleText;
+
+            content.innerHTML = `<div class="item-title">${titleText}</div><div class="item-desc">${item.desc}</div>`;
+            div.appendChild(content);
+            container.appendChild(div);
+        });
+    }
+
+    function rf_updateProgress() {
+        const checked = document.querySelectorAll('#rf-checklistContainer .checklist-item.checked').length;
+        const total = document.querySelectorAll('#rf-checklistContainer .checklist-item').length;
+        document.getElementById('rf-progressText').textContent = `${checked}/${total}`;
+        document.getElementById('rf-progressBar').style.width = total ? `${(checked/total)*100}%` : '0%';
+    }
+
+    // Refund 流程資料
+    const rf_workflowData = {
+        "s1_personal": { next: "櫃台受理", who: "用戶本人", notes: ["範例03：申請書如有修改務必蓋章", "範例04/06：影本章請勿蓋在空白處"] },
+        "s1_company": { next: "櫃台受理", who: "公司行號", notes: ["範例03：需蓋公司大小章", "範例05：必須檢附工商登記資料"] },
+        "s1_heir": { next: "櫃台受理", who: "繼承代表人", notes: ["<span style='color:red'>特殊案件</span>：請務必確認所有繼承人皆已蓋章", "需填寫付款申請書指定匯款帳戶"] },
+        "s2_internal": { next: "會計核銷", who: "服務所經辦", notes: ["範例02：4.5萬以上區處主管決行", "確認所有內部表單均已產出並核章"] },
+        "s3_verify": { next: "出納撥款", who: "經辦/驗收/會計", notes: ["經辦人與驗收人不得同一人", "確認憑證金額與申請書一致"] },
+        "s4_remit": { next: "結案", who: "出納", notes: ["優先建議使用匯款方式退費", "若領取支票，需確認領取人身分證明"] }
+    };
+
+    let rf_isEdit = false;
+    document.getElementById('rf-currentStep').addEventListener('change', function() {
+        const data = rf_workflowData[this.value];
+        document.getElementById('rf-nextAction').textContent = data.next;
+        document.getElementById('rf-inCharge').textContent = data.who;
+        
+        // 讀取筆記 (這裡簡化，不讀 LocalStorage，每次切換重置為預設)
+        const ul = document.getElementById('rf-notesList');
+        ul.innerHTML = '';
+        data.notes.forEach(n => ul.innerHTML += `<li>${n}</li>`);
+    });
+
+    function rf_toggleEdit() {
+        const btn = document.getElementById('rf-btnEdit');
+        const ul = document.getElementById('rf-notesList');
+        const area = document.getElementById('rf-editArea');
+        
+        if(!rf_isEdit) {
+            const pwd = prompt("請輸入密碼：");
+            if(pwd!=="69278199") return;
+            rf_isEdit = true; btn.textContent = "💾 儲存";
+            ul.style.display='none'; area.style.display='block';
+            let txt = ""; ul.querySelectorAll('li').forEach(li => txt += li.innerHTML + "\n");
+            area.value = txt.trim();
+        } else {
+            rf_isEdit = false; btn.textContent = "✏️ 編輯";
+            ul.style.display='block'; area.style.display='none';
+            ul.innerHTML = '';
+            area.value.split('\n').forEach(l => { if(l.trim()) ul.innerHTML += `<li>${l}</li>`; });
+        }
+    }
+
+    // ==========================================
+    // 系統 B: 自動讀表 邏輯 (Namespace: ar_)
+    // ==========================================
+    const ar_workflowData = {
+        "step1_start": { next: "櫃台受理案件", who: "【櫃台受理】", notes: ["確認用戶申請文件是否齊全", "使用系統 <span class='highlight-code'>BU1100</span> 進行受理掛號"] },
+        "step1_counter": { next: "新裝設計 & 內線檢驗", who: "【新裝設計人員】(BU2200)", notes: ["進行設計規劃", "若需現場勘查讀表通訊模組，應通知廠商配合辦理"] },
+        "step1_design": { next: "計算工程款", who: "【新裝設計人員】", notes: ["使用系統 <span class='highlight-code'>BUG400</span> 計算", "必須點選：「統一收費」及「自動讀表」選項"] },
+        "step1_calc": { next: "通知用戶繳費", who: "【新裝設計人員】", notes: ["列印繳費單通知用戶", "確認用戶完成繳費後，始可進行領料安裝"] },
+        "step1_pay": { next: "安裝 C 級水量計 (自裝)", who: "【各所水表管理人員】", notes: ["逐案領料 (出帳科目 <span class='highlight-code'>31020402</span>)", "由本公司同仁自行安裝水量計"] },
+        "step2_install": { next: "通知廠商進場", who: "【各所新改裝通知】", notes: ["水表安裝完成後，通知設備廠商進場安裝傳輸介面"] },
+        "step2_notify": { next: "安裝傳輸介面", who: "【設備廠商】", notes: ["廠商需在 <span class='highlight-code'>通知日次日起 30 日曆天</span> 內完成安裝", "需拍照並記錄安裝資訊"] },
+        "step2_vendor": { next: "匯入全區用戶表監測系統", who: "【各所抄表上下傳辦理】", notes: ["廠商依「水量計上傳格式」提供安裝資料", "將資料提供予全區系統廠商建檔"] },
+        "step3_upload": { next: "函報 MDVPN 清冊", who: "【上下傳 / 區處抄表人員】", notes: ["函報資訊處設定 VPN", "資訊處設定時間約需 <span class='highlight-code'>1週</span>"] },
+        "step3_mdvpn": { next: "開始試車比對", who: "【各所上下傳及稽查辦理】", notes: ["確認數據開始回傳", "準備進行連續 30 日的傳輸測試"] },
+        "step3_testing": { next: "檢核試車結果", who: "【各所上下傳及稽查辦理】", notes: ["傳輸率比對：<span class='highlight-code'>連續 30 日曆天正常傳送、傳輸率 95%</span>", "若未達標需重新試車"] },
+        "step4_passed": { next: "出具安裝工地證明書", who: "【各所新改裝辦理】", notes: ["確認正確率 <span class='highlight-code'>100%</span>", "出具證明書以利後續驗收"] },
+        "step4_proof": { next: "辦理驗收 & 付款", who: "【各區處新改裝辦理】", notes: ["廠商至區處報驗", "核付水量計及傳輸介面價金", "另應 <span class='highlight-code'>收取保固保證金</span>"] },
+        "step4_accept": { next: "系統建檔 (保固開始)", who: "【各所新改裝辦理】", notes: ["進入系統 <span class='highlight-code'>2-2-8</span> 建檔", "輸入「驗收合格次日」作為保固起始日"] },
+        "step4_warranty": { next: "通知櫃台開通 e 管家 & 函知用戶", who: "【新裝監工】 ➜ 通知 ➜ 【櫃台人員】", notes: ["1. 監工完成 2-2-8 建檔後，務必<span class='highlight-code'>通知櫃台人員</span>辦理開通水表 e 管家。", "2. 櫃台人員協助完成 e 管家會員開通作業。", "3. 監工函文通知用戶保固 8 年開始。"] }
+    };
+
+    document.getElementById('ar-currentStep').addEventListener('change', function() {
+        const data = ar_workflowData[this.value];
+        document.getElementById('ar-nextAction').textContent = data.next;
+        document.getElementById('ar-inCharge').textContent = data.who;
+        
+        const ul = document.getElementById('ar-notesList');
+        ul.innerHTML = '';
+        data.notes.forEach(n => ul.innerHTML += `<li>${n}</li>`);
+    });
+
+    // 初始化
+    rf_updateChecklist();
+    // 預設選擇第一個流程
+    // document.getElementById('rf-currentStep').value = 's1_personal'; 
+    // document.getElementById('rf-currentStep').dispatchEvent(new Event('change'));
+
+</script>
+
+</body>
+</html>
